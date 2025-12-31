@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MindSwipe</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f4ef;
+        --ink: #1e1e1e;
+        --muted: #5a5a5a;
+        --accent: #0f766e;
+        --card: #ffffff;
+      }
+      body {
+        margin: 0;
+        font-family: "Georgia", "Times New Roman", serif;
+        background: radial-gradient(1200px 600px at 10% 0%, #fef3c7, var(--bg));
+        color: var(--ink);
+      }
+      .wrap {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 64px 20px 80px;
+      }
+      header {
+        display: grid;
+        gap: 16px;
+      }
+      h1 {
+        font-size: 48px;
+        margin: 0;
+        letter-spacing: -0.02em;
+      }
+      p.lead {
+        font-size: 20px;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .card {
+        margin-top: 28px;
+        background: var(--card);
+        padding: 20px 24px;
+        border-radius: 14px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      ul {
+        padding-left: 18px;
+      }
+      footer {
+        margin-top: 28px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>MindSwipe</h1>
+        <p class="lead">
+          MindSwipe ist eine mobile App, die dir hilft, deine Gedanken schnell
+          festzuhalten und besser zu organisieren.
+        </p>
+      </header>
+
+      <div class="card">
+        <strong>Links</strong>
+        <ul>
+          <li><a href="./privacy.html">Datenschutzerklaerung</a></li>
+          <li><a href="./terms.html">Nutzungsbedingungen</a></li>
+        </ul>
+      </div>
+
+      <footer>
+        Kontakt: <a href="mailto:support@example.com">support@example.com</a>
+      </footer>
+    </div>
+  </body>
+</html>
