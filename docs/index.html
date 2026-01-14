@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -27,6 +27,25 @@
       header {
         display: grid;
         gap: 16px;
+      }
+      .lang-toggle {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-size: 14px;
+      }
+      .lang-toggle button {
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        background: var(--card);
+        color: var(--ink);
+        padding: 6px 12px;
+        border-radius: 999px;
+        cursor: pointer;
+      }
+      .lang-toggle button[aria-pressed="true"] {
+        border-color: var(--accent);
+        color: var(--accent);
+        font-weight: 600;
       }
       h1 {
         font-size: 48px;
@@ -66,24 +85,71 @@
   <body>
     <div class="wrap">
       <header>
+        <div class="lang-toggle" role="group" aria-label="Language">
+          <button type="button" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-lang="de" aria-pressed="false">DE</button>
+        </div>
         <h1>MindSwipe</h1>
-        <p class="lead">
-          MindSwipe ist eine mobile App, die dir hilft, deine Gedanken schnell
-          festzuhalten und besser zu organisieren.
+        <p class="lead" data-i18n="lead">
+          MindSwipe is a mobile app that helps you capture ideas quickly and
+          keep them organized.
         </p>
       </header>
 
       <div class="card">
-        <strong>Links</strong>
+        <strong data-i18n="links-title">Resources</strong>
         <ul>
-          <li><a href="./privacy.html">Datenschutzerklaerung</a></li>
-          <li><a href="./terms.html">Nutzungsbedingungen</a></li>
+          <li><a href="./privacy.html" data-i18n="privacy">Privacy Policy</a></li>
+          <li><a href="./terms.html" data-i18n="terms">Terms of Service</a></li>
         </ul>
       </div>
 
       <footer>
-        Kontakt: <a href="mailto:support@example.com">support@example.com</a>
+        <span data-i18n="contact">Contact</span>:
+        <a href="mailto:mindswipe.app@gmail.com">mindswipe.app@gmail.com</a>
       </footer>
     </div>
+    <script>
+      const translations = {
+        en: {
+          lead: "MindSwipe is a mobile app that helps you capture ideas quickly and keep them organized.",
+          "links-title": "Resources",
+          privacy: "Privacy Policy",
+          terms: "Terms of Service",
+          contact: "Contact",
+        },
+        de: {
+          lead: "MindSwipe ist eine mobile App, die dir hilft, deine Gedanken schnell festzuhalten und besser zu organisieren.",
+          "links-title": "Links",
+          privacy: "Datenschutzerklaerung",
+          terms: "Nutzungsbedingungen",
+          contact: "Kontakt",
+        },
+      };
+
+      const buttons = document.querySelectorAll("[data-lang]");
+      const i18nTargets = document.querySelectorAll("[data-i18n]");
+
+      function setLanguage(lang) {
+        const copy = translations[lang];
+        if (!copy) {
+          return;
+        }
+        document.documentElement.lang = lang;
+        i18nTargets.forEach((node) => {
+          const key = node.getAttribute("data-i18n");
+          if (copy[key]) {
+            node.textContent = copy[key];
+          }
+        });
+        buttons.forEach((button) => {
+          button.setAttribute("aria-pressed", button.dataset.lang === lang ? "true" : "false");
+        });
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => setLanguage(button.dataset.lang));
+      });
+    </script>
   </body>
 </html>
