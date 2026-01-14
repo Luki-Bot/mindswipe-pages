@@ -129,6 +129,7 @@
 
       const buttons = document.querySelectorAll("[data-lang]");
       const i18nTargets = document.querySelectorAll("[data-i18n]");
+      const storedLang = localStorage.getItem("lang");
 
       function setLanguage(lang) {
         const copy = translations[lang];
@@ -145,11 +146,14 @@
         buttons.forEach((button) => {
           button.setAttribute("aria-pressed", button.dataset.lang === lang ? "true" : "false");
         });
+        localStorage.setItem("lang", lang);
       }
 
       buttons.forEach((button) => {
         button.addEventListener("click", () => setLanguage(button.dataset.lang));
       });
+
+      setLanguage(storedLang || "en");
     </script>
   </body>
 </html>

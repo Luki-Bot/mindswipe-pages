@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Datenschutzerklaerung - MindSwipe</title>
+    <title data-i18n="title">Privacy Policy - MindSwipe</title>
     <style>
       :root {
         color-scheme: light;
@@ -27,6 +27,26 @@
         font-size: 36px;
         margin-bottom: 8px;
       }
+      .lang-toggle {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-size: 14px;
+        margin-bottom: 18px;
+      }
+      .lang-toggle button {
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        background: #ffffff;
+        color: var(--ink);
+        padding: 6px 12px;
+        border-radius: 999px;
+        cursor: pointer;
+      }
+      .lang-toggle button[aria-pressed="true"] {
+        border-color: var(--accent);
+        color: var(--accent);
+        font-weight: 600;
+      }
       p, li {
         line-height: 1.6;
         color: var(--muted);
@@ -37,38 +57,111 @@
   </head>
   <body>
     <div class="wrap">
-      <h1>Datenschutzerklaerung</h1>
-      <p>Stand: 2025-01-01</p>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="de" aria-pressed="false">DE</button>
+      </div>
+      <h1 data-i18n="heading">Privacy Policy</h1>
+      <p data-i18n="updated">Last updated: 2025-01-01</p>
 
-      <p>
-        Diese App verwendet Google Sign-In und Firebase Authentication.
-        Dabei werden die Informationen verarbeitet, die du bei Google
-        freigibst (z. B. Name, E-Mail, Profilbild).
+      <p data-i18n="intro">
+        This app uses Google Sign-In and Firebase Authentication. We process the
+        information you share with Google (such as name, email address, and
+        profile image).
       </p>
 
-      <h2>Verantwortlich</h2>
+      <h2 data-i18n="controller-title">Controller</h2>
       <p>
         MindSwipe<br />
-        Kontakt: <a href="mailto:mindswipe.app@gmail.com">mindswipe.app@gmail.com</a>
+        <span data-i18n="contact">Contact</span>:
+        <a href="mailto:mindswipe.app@gmail.com">mindswipe.app@gmail.com</a>
       </p>
 
-      <h2>Zweck der Verarbeitung</h2>
+      <h2 data-i18n="purpose-title">Purpose of processing</h2>
       <ul>
-        <li>Authentifizierung und Login in der App</li>
-        <li>Bereitstellung und Sicherung deines Benutzerkontos</li>
+        <li data-i18n="purpose-1">Authentication and login in the app</li>
+        <li data-i18n="purpose-2">Provisioning and securing your account</li>
       </ul>
 
-      <h2>Drittanbieter</h2>
+      <h2 data-i18n="providers-title">Third-party services</h2>
       <p>
-        Wir nutzen Firebase (Google LLC). Weitere Infos:
-        <a href="https://firebase.google.com/support/privacy">Firebase Privacy</a>
+        <span data-i18n="providers-body">We use Firebase (Google LLC). More details:</span>
+        <a href="https://firebase.google.com/support/privacy" data-i18n="providers-link">Firebase Privacy</a>
       </p>
 
-      <h2>Deine Rechte</h2>
-      <p>
-        Du kannst Auskunft, Berichtigung oder Loeschung deiner Daten verlangen.
-        Kontaktiere uns unter der oben genannten E-Mail.
+      <h2 data-i18n="rights-title">Your rights</h2>
+      <p data-i18n="rights-body">
+        You can request access, correction, or deletion of your data. Contact us
+        via the email above.
       </p>
     </div>
+    <script>
+      const translations = {
+        en: {
+          title: "Privacy Policy - MindSwipe",
+          heading: "Privacy Policy",
+          updated: "Last updated: 2025-01-01",
+          intro:
+            "This app uses Google Sign-In and Firebase Authentication. We process the information you share with Google (such as name, email address, and profile image).",
+          "controller-title": "Controller",
+          contact: "Contact",
+          "purpose-title": "Purpose of processing",
+          "purpose-1": "Authentication and login in the app",
+          "purpose-2": "Provisioning and securing your account",
+          "providers-title": "Third-party services",
+          "providers-body": "We use Firebase (Google LLC). More details:",
+          "providers-link": "Firebase Privacy",
+          "rights-title": "Your rights",
+          "rights-body":
+            "You can request access, correction, or deletion of your data. Contact us via the email above.",
+        },
+        de: {
+          title: "Datenschutzerklaerung - MindSwipe",
+          heading: "Datenschutzerklaerung",
+          updated: "Stand: 2025-01-01",
+          intro:
+            "Diese App verwendet Google Sign-In und Firebase Authentication. Dabei werden die Informationen verarbeitet, die du bei Google freigibst (z. B. Name, E-Mail, Profilbild).",
+          "controller-title": "Verantwortlich",
+          contact: "Kontakt",
+          "purpose-title": "Zweck der Verarbeitung",
+          "purpose-1": "Authentifizierung und Login in der App",
+          "purpose-2": "Bereitstellung und Sicherung deines Benutzerkontos",
+          "providers-title": "Drittanbieter",
+          "providers-body": "Wir nutzen Firebase (Google LLC). Weitere Infos:",
+          "providers-link": "Firebase Privacy",
+          "rights-title": "Deine Rechte",
+          "rights-body":
+            "Du kannst Auskunft, Berichtigung oder Loeschung deiner Daten verlangen. Kontaktiere uns unter der oben genannten E-Mail.",
+        },
+      };
+
+      const buttons = document.querySelectorAll("[data-lang]");
+      const i18nTargets = document.querySelectorAll("[data-i18n]");
+      const storedLang = localStorage.getItem("lang");
+
+      function setLanguage(lang) {
+        const copy = translations[lang];
+        if (!copy) {
+          return;
+        }
+        document.documentElement.lang = lang;
+        i18nTargets.forEach((node) => {
+          const key = node.getAttribute("data-i18n");
+          if (copy[key]) {
+            node.textContent = copy[key];
+          }
+        });
+        buttons.forEach((button) => {
+          button.setAttribute("aria-pressed", button.dataset.lang === lang ? "true" : "false");
+        });
+        localStorage.setItem("lang", lang);
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => setLanguage(button.dataset.lang));
+      });
+
+      setLanguage(storedLang || "en");
+    </script>
   </body>
 </html>

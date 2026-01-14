@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Nutzungsbedingungen - MindSwipe</title>
+    <title data-i18n="title">Terms of Service - MindSwipe</title>
     <style>
       :root {
         color-scheme: light;
@@ -27,6 +27,26 @@
         font-size: 36px;
         margin-bottom: 8px;
       }
+      .lang-toggle {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-size: 14px;
+        margin-bottom: 18px;
+      }
+      .lang-toggle button {
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        background: #ffffff;
+        color: var(--ink);
+        padding: 6px 12px;
+        border-radius: 999px;
+        cursor: pointer;
+      }
+      .lang-toggle button[aria-pressed="true"] {
+        border-color: var(--accent);
+        color: var(--accent);
+        font-weight: 600;
+      }
       p, li {
         line-height: 1.6;
         color: var(--muted);
@@ -37,30 +57,94 @@
   </head>
   <body>
     <div class="wrap">
-      <h1>Nutzungsbedingungen</h1>
-      <p>Stand: 2025-01-01</p>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="de" aria-pressed="false">DE</button>
+      </div>
+      <h1 data-i18n="heading">Terms of Service</h1>
+      <p data-i18n="updated">Last updated: 2025-01-01</p>
 
-      <p>
-        Mit der Nutzung von MindSwipe stimmst du diesen Bedingungen zu.
-        Die App wird ohne Gewaehr bereitgestellt. Wir koennen Funktionen
-        jederzeit aendern oder einstellen.
+      <p data-i18n="intro">
+        By using MindSwipe, you agree to these terms. The app is provided as-is,
+        and we may change or discontinue features at any time.
       </p>
 
-      <h2>Nutzerverhalten</h2>
+      <h2 data-i18n="behavior-title">User conduct</h2>
       <ul>
-        <li>Kein Missbrauch der App oder der Dienste</li>
-        <li>Keine rechtswidrigen Inhalte</li>
+        <li data-i18n="behavior-1">No abuse of the app or services</li>
+        <li data-i18n="behavior-2">No unlawful content</li>
       </ul>
 
-      <h2>Haftung</h2>
-      <p>
-        Wir haften nicht fuer indirekte Schaeden oder Datenverlust, soweit
-        gesetzlich zulaessig.
+      <h2 data-i18n="liability-title">Liability</h2>
+      <p data-i18n="liability-body">
+        We are not liable for indirect damages or data loss to the extent
+        permitted by law.
       </p>
 
       <p>
-        Kontakt: <a href="mailto:mindswipe.app@gmail.com">mindswipe.app@gmail.com</a>
+        <span data-i18n="contact">Contact</span>:
+        <a href="mailto:mindswipe.app@gmail.com">mindswipe.app@gmail.com</a>
       </p>
     </div>
+    <script>
+      const translations = {
+        en: {
+          title: "Terms of Service - MindSwipe",
+          heading: "Terms of Service",
+          updated: "Last updated: 2025-01-01",
+          intro:
+            "By using MindSwipe, you agree to these terms. The app is provided as-is, and we may change or discontinue features at any time.",
+          "behavior-title": "User conduct",
+          "behavior-1": "No abuse of the app or services",
+          "behavior-2": "No unlawful content",
+          "liability-title": "Liability",
+          "liability-body":
+            "We are not liable for indirect damages or data loss to the extent permitted by law.",
+          contact: "Contact",
+        },
+        de: {
+          title: "Nutzungsbedingungen - MindSwipe",
+          heading: "Nutzungsbedingungen",
+          updated: "Stand: 2025-01-01",
+          intro:
+            "Mit der Nutzung von MindSwipe stimmst du diesen Bedingungen zu. Die App wird ohne Gewaehr bereitgestellt. Wir koennen Funktionen jederzeit aendern oder einstellen.",
+          "behavior-title": "Nutzerverhalten",
+          "behavior-1": "Kein Missbrauch der App oder der Dienste",
+          "behavior-2": "Keine rechtswidrigen Inhalte",
+          "liability-title": "Haftung",
+          "liability-body":
+            "Wir haften nicht fuer indirekte Schaeden oder Datenverlust, soweit gesetzlich zulaessig.",
+          contact: "Kontakt",
+        },
+      };
+
+      const buttons = document.querySelectorAll("[data-lang]");
+      const i18nTargets = document.querySelectorAll("[data-i18n]");
+      const storedLang = localStorage.getItem("lang");
+
+      function setLanguage(lang) {
+        const copy = translations[lang];
+        if (!copy) {
+          return;
+        }
+        document.documentElement.lang = lang;
+        i18nTargets.forEach((node) => {
+          const key = node.getAttribute("data-i18n");
+          if (copy[key]) {
+            node.textContent = copy[key];
+          }
+        });
+        buttons.forEach((button) => {
+          button.setAttribute("aria-pressed", button.dataset.lang === lang ? "true" : "false");
+        });
+        localStorage.setItem("lang", lang);
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => setLanguage(button.dataset.lang));
+      });
+
+      setLanguage(storedLang || "en");
+    </script>
   </body>
 </html>
